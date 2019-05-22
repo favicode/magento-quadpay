@@ -1,0 +1,41 @@
+version: '2'
+services:
+  mariadb:
+    image: 'bitnami/mariadb:10.2'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=quadpay
+      - MARIADB_PASSWORD=Quadpay2019
+      - MARIADB_DATABASE=magento
+    volumes:
+      - 'mariadb_data/bitnami'
+  magento:
+    image: 'favicode/m23:1.0'
+    environment:
+      - MYSQL_HOST=mariadb
+      - MARIADB_PORT_NUMBER=3306
+      - MAGENTO_DATABASE_USER=quadpay
+      - MAGENTO_DATABASE_PASSWORD=Quadpay2019
+      - MAGENTO_DATABASE_NAME=magento
+      - MAGENTO_ADMIN_FIRSTNAME=First Name
+      - MAGENTO_ADMIN_LASTNAME=Last Name
+      - MAGENTO_ADMIN_EMAIL=contact@favicode.net
+      - MAGENTO_ADMIN_USERNAME=favicode
+      - MAGENTO_ADMIN_PASSWORD=!QuadPay2019
+      - MAGENTO_ADMINURI=admin
+      - MAGENTO_HOST=m23quadpay.lo
+      - MAGENTO_LANGUAGE=en_US
+      - MAGENTO_TIMEZONE=America/Chicago
+      - MAGENTO_DEFAULT_CURRENCY=USD
+      - MAGENTO_USE_SECURE=0
+      - MAGENTO_USE_SECURE_ADMIN=0
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - '/home/dpotkoc/public_html/dockerm23:/var/www/html'
+    depends_on:
+      - mariadb
+volumes:
+  mariadb_data:
+    driver: local
