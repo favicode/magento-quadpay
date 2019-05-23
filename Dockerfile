@@ -6,8 +6,8 @@ RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && apt-get update
 
 # Install packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y apache2 apache2-bin apache2-data apache2-utils libapache2-mod-fcgid php7.2-bcmath php7.2-cli php7.2-common php7.2-curl php7.2-fpm php7.2-gd php7.2-intl php7.2-json php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-readline php7.2-soap php7.2-xml php7.2-xsl php7.2-zip php-xdebug mariadb-client curl
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get install -y nodejs
+#RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+#RUN apt-get install -y nodejs
 
 # Setup PHP
 RUN mkdir /run/php && touch /run/php/php-fpm.sock
@@ -38,14 +38,18 @@ RUN chmod 755 /start.sh && chmod 755 /usr/bin/robo && chmod 755 /usr/bin/compose
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
 
 
-
-WORKDIR /var/www/html
-
 CMD ["/start.sh"]
 
-#USER favicode
+COPY ./docker-entrypoint.sh /home/favicode/
+RUN chmod +x /home/favicode/docker-entrypoint.sh
+WORKDIR /home/favicode
 
 ADD scripts/auth.json /home/favicode/.composer/auth.json
+RUN chmod 755 /home/favicode/.composer/auth.json
+RUN chmod 777 /home/favicode/.composer
 
-#RUN composer create-project --repository=https://repo.magento.com/ magento/project-community-edition=$MAGENTO_VERSION $INSTALL_DIR
-#RUN php $INSTALL_DIR/bin/magento setup:install --base-url=$MAGENTO_HOST --backend-frontname=$MAGENTO_ADMINURI --language=$MAGENTO_LANGUAGE --timezone=$MAGENTO_TIMEZONE --currency=$MAGENTO_DEFAULT_CURRENCY --db-host=$MYSQL_HOST --db-name=$MAGENTO_DATABASE_NAME --db-user=$MAGENTO_DATABASE_USER --db-password=$MAGENTO_DATABASE_PASSWORD --use-secure=$MAGENTO_USE_SECURE --use-secure-admin=$MAGENTO_USE_SECURE_ADMIN --admin-firstname=$MAGENTO_ADMIN_FIRSTNAME --admin-lastname=$MAGENTO_ADMIN_LASTNAME --admin-email=$MAGENTO_ADMIN_EMAIL --admin-user=$MAGENTO_ADMIN_USERNAME --admin-password=$MAGENTO_ADMIN_PASSWORD
+ENTRYPOINT ["/home/favicode/docker-entrypoint.sh"]
+
+#RUN su favicode -c "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $INSTALL_DIR $MAGENTO_VERSION"
+
+#RUN su - favicode -c "php $INSTALL_DIR/bin/magento setup:install --base-url=$MAGENTO_HOST --backend-frontname=$MAGENTO_ADMINURI --language=$MAGENTO_LANGUAGE --timezone=$MAGENTO_TIMEZONE --currency=$MAGENTO_DEFAULT_CURRENCY --db-host=$MYSQL_HOST --db-name=$MAGENTO_DATABASE_NAME --db-user=$MAGENTO_DATABASE_USER --db-password=$MAGENTO_DATABASE_PASSWORD --use-secure=$MAGENTO_USE_SECURE --use-secure-admin=$MAGENTO_USE_SECURE_ADMIN --admin-firstname=$MAGENTO_ADMIN_FIRSTNAME --admin-lastname=$MAGENTO_ADMIN_LASTNAME --admin-email=$MAGENTO_ADMIN_EMAIL --admin-user=$MAGENTO_ADMIN_USERNAME --admin-password=$MAGENTO_ADMIN_PASSWORD"
