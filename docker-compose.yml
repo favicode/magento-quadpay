@@ -1,42 +1,23 @@
 version: '2'
 services:
-  mariadb:
-    image: 'bitnami/mariadb:10.2'
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=quadpay
-      - MARIADB_PASSWORD=Quadpay2019
-      - MARIADB_DATABASE=magento2
+  db:
+    image: mysql:5.6.23
     volumes:
-      - 'mariadb_data/bitnami'
+      - db-data:/var/lib/mysql/data
+    env_file:
+      - web-variables.env
   magento:
-    image: 'favicode/m23:1.0'
-    environment:
-      - MYSQL_HOST=mariadb
-      - MARIADB_PORT_NUMBER=3306
-      - MAGENTO_DATABASE_USER=quadpay
-      - MAGENTO_DATABASE_PASSWORD=Quadpay2019
-      - MAGENTO_DATABASE_NAME=magento2
-      - MAGENTO_ADMIN_FIRSTNAME=First Name
-      - MAGENTO_ADMIN_LASTNAME=Last Name
-      - MAGENTO_ADMIN_EMAIL=contact@favicode.net
-      - MAGENTO_ADMIN_USERNAME=favicode
-      - MAGENTO_ADMIN_PASSWORD=!QuadPay2019
-      - MAGENTO_ADMINURI=admin
-      - MAGENTO_HOST=m23quadpay.lo
-      - MAGENTO_LANGUAGE=en_US
-      - MAGENTO_TIMEZONE=America/Chicago
-      - MAGENTO_DEFAULT_CURRENCY=USD
-      - MAGENTO_USE_SECURE=0
-      - MAGENTO_USE_SECURE_ADMIN=0
+    image: 'quadpaymagento'
+    env_file:
+      - web-variables.env
     ports:
       - '80:80'
       - '443:443'
     depends_on:
-      - mariadb
+      - db
       - redis
   redis:
     image: redis:latest
 volumes:
-  mariadb_data:
+  db-data:
     driver: local

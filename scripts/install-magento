@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+su favicode <<EOSU
+
+/var/www/html/bin/magento setup:install --backend-frontname=$MAGENTO_BACKEND_FRONTNAME --session-save="files" --db-host=$MYSQL_HOST --db-name=$MAGENTO_DATABASE_NAME --db-user=$MAGENTO_DATABASE_USER --db-password=$MAGENTO_DATABASE_PASSWORD --base-url=$MAGENTO_BASE_URL --admin-user=$MAGENTO_ADMIN_USERNAME --admin-password=$MAGENTO_ADMIN_PASSWORD --admin-email=$MAGENTO_ADMIN_EMAIL --admin-firstname=$MAGENTO_ADMIN_FIRSTNAME --admin-lastname=$MAGENTO_ADMIN_LASTNAME
+
+EOSU

@@ -31,8 +31,10 @@ ADD start.sh /start.sh
 ADD scripts/robo.phar /usr/bin/robo
 ADD scripts/composer.phar /usr/bin/composer
 ADD scripts/n98-magerun2.phar /usr/bin/n98-magerun2
+ADD scripts/install-magento /usr/local/bin/install-magento
+ADD scripts/install-sampledata /usr/local/bin/install-sampledata
 
-RUN chmod 755 /start.sh && chmod 755 /usr/bin/robo && chmod 755 /usr/bin/composer && chmod 755 /usr/bin/n98-magerun2
+RUN chmod 755 /usr/local/bin/install-magento && chmod 755 /usr/local/bin/install-sampledata && chmod 755 /start.sh && chmod 755 /usr/bin/robo && chmod 755 /usr/bin/composer && chmod 755 /usr/bin/n98-magerun2
 
 # Cleanup
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/cache/apk/* /var/tmp/* /tmp/*
@@ -47,6 +49,10 @@ WORKDIR /home/favicode
 ADD scripts/auth.json /home/favicode/.composer/auth.json
 RUN chmod 755 /home/favicode/.composer/auth.json
 RUN chmod 777 /home/favicode/.composer
+
+RUN su favicode -c "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $INSTALL_DIR $MAGENTO_VERSION"
+WORKDIR /home/favicode/html
+RUN su favicode -c "composer require mr/quadpay:1.0.1"
 
 ENTRYPOINT ["/home/favicode/docker-entrypoint.sh"]
 
