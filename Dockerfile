@@ -23,7 +23,7 @@ ADD config/fpm.conf /etc/php/7.2/fpm/pool.d/www.conf
 ADD config/apache.conf /etc/apache2/sites-available/000-default.conf
 
 #ENV COMPOSER_HOME /root/.composer/
-ENV MAGENTO_VERSION 2.3.1
+ENV MAGENTO_VERSION 2.3.2
 ENV INSTALL_DIR /var/www/html
 
 # Add custom scripts
@@ -52,10 +52,4 @@ RUN chmod 777 /home/favicode/.composer
 
 RUN su favicode -c "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $INSTALL_DIR $MAGENTO_VERSION"
 WORKDIR /home/favicode/html
-RUN su favicode -c "composer require mr/quadpay:1.0.1"
-
-ENTRYPOINT ["/home/favicode/docker-entrypoint.sh"]
-
-#RUN su favicode -c "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $INSTALL_DIR $MAGENTO_VERSION"
-
-#RUN su - favicode -c "php $INSTALL_DIR/bin/magento setup:install --base-url=$MAGENTO_HOST --backend-frontname=$MAGENTO_ADMINURI --language=$MAGENTO_LANGUAGE --timezone=$MAGENTO_TIMEZONE --currency=$MAGENTO_DEFAULT_CURRENCY --db-host=$MYSQL_HOST --db-name=$MAGENTO_DATABASE_NAME --db-user=$MAGENTO_DATABASE_USER --db-password=$MAGENTO_DATABASE_PASSWORD --use-secure=$MAGENTO_USE_SECURE --use-secure-admin=$MAGENTO_USE_SECURE_ADMIN --admin-firstname=$MAGENTO_ADMIN_FIRSTNAME --admin-lastname=$MAGENTO_ADMIN_LASTNAME --admin-email=$MAGENTO_ADMIN_EMAIL --admin-user=$MAGENTO_ADMIN_USERNAME --admin-password=$MAGENTO_ADMIN_PASSWORD"
+RUN su favicode -c "composer require mr/quadpay"
