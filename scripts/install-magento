@@ -8,7 +8,13 @@ su favicode <<EOSU
 --base-url=$MAGENTO_BASE_URL --admin-user=$MAGENTO_ADMIN_USERNAME \
 --admin-password=$MAGENTO_ADMIN_PASSWORD --admin-email=$MAGENTO_ADMIN_EMAIL \
 --admin-firstname=$MAGENTO_ADMIN_FIRSTNAME --admin-lastname=$MAGENTO_ADMIN_LASTNAME \
---use-rewrites 1 --session-save=redis --session-save-redis-host=redis --session-save-redis-db=1 --language=en_US --currency=USD --timezone=America/Chicago --cache-backend=redis --cache-backend-redis-server=redis --cache-backend-redis-db=2 --page-cache=redis --cache-backend-redis-server=redis --cache-backend-redis-db=3
+--use-rewrites 1 --session-save=redis --session-save-redis-host=redis --session-save-redis-db=1 --language=en_US --currency=USD --timezone=America/Chicago \
+--cache-backend=redis \
+--cache-backend-redis-server=redis \
+--cache-backend-redis-db=2 \
+--page-cache=redis \
+--page-cache-redis-server=redis \
+--page-cache-redis-db=3
 
 
 EOSU
