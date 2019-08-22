@@ -7,7 +7,7 @@ services:
     env_file:
       - web-variables.env
   magento:
-    image: 'quadpay-magento'
+    image: 'favicode/magento-quadpay:1.0'
     env_file:
       - web-variables.env
     ports:
